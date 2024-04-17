@@ -1,16 +1,21 @@
 <template>
-    <render-talent :talent-code="code" :webview="webview"></render-talent>
+    <div>
+        <render-talent v-if="typeof version != 'number'" :talent-code="code" :webview="webview"></render-talent>
+        <render-talent2 v-else :talent-code="code" :webview="webview"></render-talent2>
+    </div>
 </template>
 
 <script>
-import renderTalent from "./RenderTalent2.vue"
+import renderTalent from "./RenderTalent.vue";
+import renderTalent2 from "./RenderTalent2.vue";
 export default {
-    name: 'Talent2Plugin',
+    name: "Talent2Plugin",
     data() {
         return {
-            code: '',
-            webview: false
-        }
+            code: "",
+            webview: false,
+            version: "",
+        };
     },
     methods: {
         /**
@@ -18,26 +23,31 @@ export default {
          * @param {string} val 加密后的编码
          * @returns {string} 解码后的数据
          */
-        decodeCode: function(val) {
+        decodeCode: function (val) {
             return decodeURIComponent(escape(window.atob(val)));
         },
-        init: function() {
+        init: function () {
             const regex = new RegExp(/code=(.*)/g);
 
             const code = document.location.href.match(regex);
 
-            const _code = code && code.join('').slice(5);
+            const _code = code && code.join("").slice(5);
 
-            this.code = this.decodeCode(_code)
+            this.code = this.decodeCode(_code);
 
-            this.webview = new URLSearchParams(document.location.search).get('webview') === 'true'
-        }
+            const codeObj = JSON.parse(this.code);
+
+            this.version = codeObj.version;
+
+            this.webview = new URLSearchParams(document.location.search).get("webview") === "true";
+        },
     },
-    created: function() {
-        this.init()
+    created: function () {
+        this.init();
     },
     components: {
-        renderTalent
-    }
-}
+        renderTalent,
+        renderTalent2,
+    },
+};
 </script>

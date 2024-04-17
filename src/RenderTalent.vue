@@ -1,5 +1,5 @@
 <template>
-    <div class="c-talent2-box c-talent2-render-box" :class="{ webview: webview }">
+    <div class="c-talent2-box c-talent2-render-box" :class="{ 'webview': webview }">
         <div class="c-talent2-header">
             <h3 class="c-talent2-title">镇派模拟器</h3>
         </div>
@@ -10,7 +10,7 @@
                     <div
                         class="c-talent2-content"
                         :style="{
-                            'background-image': xf ? `url(${talentBg('left', 1)})` : '',
+                            'background-image': xf ? `url(${talentBg('left', 1)})` : ''
                         }"
                         :class="{ 'is-single': isSingle }"
                     >
@@ -21,18 +21,17 @@
                         </div>
                         <div
                             class="c-talent2-content-row"
-                            style="grid-template-columns: repeat(5, 1fr)"
                             v-for="(row, index) in talentContent.left"
-                            :key="'l' + index"
+                            :key="'l'+index"
                         >
                             <template v-for="(item, i) in row">
                                 <div
                                     v-if="item"
                                     class="c-talent2-content-item"
                                     :class="[
-                                        { 'c-talent2-content-item-skill': item.type === 'skill' },
+                                        {'c-talent2-content-item-skill': item.type === 'skill'},
                                         !canOperate(index, 'left') ? 'c-talent2-content-item-disabled' : '',
-                                        item.pretab ? 'c-talent2-pretab' : '',
+                                        item.pretab ? 'c-talent2-pretab' : ''
                                     ]"
                                     :key="i"
                                     @mouseover="$set(item, 'on', true)"
@@ -40,26 +39,17 @@
                                 >
                                     <div
                                         :class="[
-                                            !canLeftItemOperate(index, i)
-                                                ? item.type === 'skill'
-                                                    ? 'c-talent2-skill-unselected'
-                                                    : 'c-talent2-unselected'
-                                                : 'c-talent2-selected',
+                                            !canLeftItemOperate(index, i) ?
+                                                (item.type === 'skill' ? 'c-talent2-skill-unselected' : 'c-talent2-unselected')
+                                                    : 'c-talent2-selected',
                                             item.type === 'skill' ? '' : 'c-talent2-talent',
-                                            !surplus && !Number(l_data[index][i])
-                                                ? item.type === 'skill'
-                                                    ? 'c-talent2-skill-unselected'
-                                                    : 'c-talent2-unselected'
-                                                : '',
+                                            !surplus && !Number(l_data[index][i]) ?
+                                                (item.type === 'skill' ? 'c-talent2-skill-unselected' : 'c-talent2-unselected') : ''
                                         ]"
                                     >
                                         <!-- HAS PARENT -->
                                         <span
-                                            v-if="
-                                                item.pretab &&
-                                                !isLeftParentAdd(index, i) &&
-                                                canLeftItemOperate(index, i)
-                                            "
+                                            v-if="item.pretab && !isLeftParentAdd(index, i) && canLeftItemOperate(index, i)"
                                             :class="item.type === 'skill' ? 'is-add-skill' : 'is-add'"
                                         ></span>
                                         <!-- TOTAL ZERO -->
@@ -77,22 +67,20 @@
                                     <!-- DESC -->
                                     <span class="c-talent2-pop" :class="item.on ? 'on' : ''">
                                         <b class="c-talent2-name">
-                                            <span
-                                                >{{ item.name }}
+                                            <span>{{ item.name }}
                                                 <small class="u-talent2-id" v-if="item.id">(ID: {{ item.id }})</small>
                                             </span>
                                             <span class="c-talent2-number">
-                                                第{{ Number(l_data[index][i]) + "/" + item.max }}重
+                                                第{{ Number(l_data[index][i]) + '/' + item.max }}重
                                             </span>
                                         </b>
                                         <!-- <b class="c-talent2-type">
                                             {{ item.type === 'talent' ? '被动招式': '主动招式' }}
                                         </b>-->
                                         <span class="c-talent2-desc">
-                                            {{
-                                                !Number(l_data[index][i]) || xf === "通用"
-                                                    ? item.desc[0]
-                                                    : item.desc[l_data[index][i] - 1]
+                                            {{ !Number(l_data[index][i]) || xf === '通用'
+                                            ? item.desc[0]
+                                            : item.desc[l_data[index][i] - 1]
                                             }}
                                         </span>
                                         <span
@@ -101,17 +89,21 @@
                                         >
                                             <span v-if="xf !== '通用'" class="c-next-text">下一重：</span>
                                             <span>
-                                                {{ item.desc[l_data[index][i]] }}
+                                                {{
+                                                item.desc[l_data[index][i]]
+                                                }}
                                             </span>
                                         </span>
-                                        <span v-if="Number(l_data[index][i]) === item.max" class="c-talent2-pop-max"
-                                            >该招式已练至最高境界</span
-                                        >
+                                        <span
+                                            v-if="Number(l_data[index][i]) === item.max"
+                                            class="c-talent2-pop-max"
+                                        >该招式已练至最高境界</span>
                                     </span>
                                     <!-- COUNT -->
-                                    <span v-if="Number(l_data[index][i])" class="c-talent2-content-item-count">{{
-                                        l_data[index][i]
-                                    }}</span>
+                                    <span
+                                        v-if="Number(l_data[index][i])"
+                                        class="c-talent2-content-item-count"
+                                    >{{ l_data[index][i] }}</span>
                                 </div>
                                 <div v-else class="c-talent2-content-item-empty" :key="i + 'empty'"></div>
                             </template>
@@ -124,7 +116,7 @@
                     <div
                         class="c-talent2-content"
                         :style="{
-                            'background-image': xf ? `url(${talentBg('right', 1)})` : '',
+                            'background-image': xf ? `url(${talentBg('right', 1)})` : ''
                         }"
                     >
                         <div class="c-talent2-group">
@@ -134,16 +126,15 @@
                         </div>
                         <div
                             class="c-talent2-content-row"
-                            style="grid-template-columns: repeat(5, 1fr)"
                             v-for="(row, index) in talentContent.right"
-                            :key="'l' + index"
+                            :key="'l'+index"
                         >
                             <template v-for="(item, i) in row">
                                 <div
                                     v-if="item"
                                     class="c-talent2-content-item"
                                     :class="[
-                                        { 'c-talent2-content-item-skill': item.type === 'skill' },
+                                        {'c-talent2-content-item-skill': item.type === 'skill'},
                                         !canOperate(index, 'right') ? 'c-talent2-content-item-disabled' : '',
                                         item.pretab ? 'c-talent2-pretab' : '',
                                     ]"
@@ -153,26 +144,17 @@
                                 >
                                     <div
                                         :class="[
-                                            !canRightItemOperate(index, i)
-                                                ? item.type === 'skill'
-                                                    ? 'c-talent2-skill-unselected'
-                                                    : 'c-talent2-unselected'
-                                                : 'c-talent2-selected',
+                                            !canRightItemOperate(index, i) ?
+                                                (item.type === 'skill' ? 'c-talent2-skill-unselected' : 'c-talent2-unselected')
+                                                    : 'c-talent2-selected',
                                             item.type === 'skill' ? '' : 'c-talent2-talent',
-                                            !surplus && !Number(r_data[index][i])
-                                                ? item.type === 'skill'
-                                                    ? 'c-talent2-skill-unselected'
-                                                    : 'c-talent2-unselected'
-                                                : '',
+                                            !surplus && !Number(r_data[index][i]) ?
+                                                (item.type === 'skill' ? 'c-talent2-skill-unselected' : 'c-talent2-unselected') : ''
                                         ]"
                                     >
                                         <!-- HAS PARENT -->
                                         <span
-                                            v-if="
-                                                item.pretab &&
-                                                !isRightParentAdd(index, i) &&
-                                                canRightItemOperate(index, i)
-                                            "
+                                            v-if="item.pretab && !isRightParentAdd(index, i) && canRightItemOperate(index, i)"
                                             :class="item.type === 'skill' ? 'is-add-skill' : 'is-add'"
                                         ></span>
                                         <!-- TOTAL ZERO -->
@@ -190,22 +172,20 @@
                                     <!-- DESC -->
                                     <span class="c-talent2-pop" :class="item.on ? 'on' : ''">
                                         <b class="c-talent2-name">
-                                            <span
-                                                >{{ item.name }}
+                                            <span>{{ item.name }}
                                                 <small class="u-talent2-id" v-if="item.id">(ID: {{ item.id }})</small>
                                             </span>
                                             <span class="c-talent2-number">
-                                                第{{ Number(r_data[index][i]) + "/" + item.max }}重
+                                                第{{ Number(r_data[index][i]) + '/' + item.max }}重
                                             </span>
                                         </b>
                                         <!-- <b class="c-talent2-type">
                                             {{ item.type === 'talent' ? '被动招式': '主动招式' }}
                                         </b>-->
                                         <span class="c-talent2-desc">
-                                            {{
-                                                !Number(r_data[index][i]) || xf === "通用"
-                                                    ? item.desc[0]
-                                                    : item.desc[r_data[index][i] - 1]
+                                            {{ !Number(r_data[index][i]) || xf === '通用'
+                                            ? item.desc[0]
+                                            : item.desc[r_data[index][i] - 1]
                                             }}
                                         </span>
                                         <span
@@ -214,18 +194,22 @@
                                         >
                                             <span v-if="xf !== '通用'" class="c-next-text">下一重：</span>
                                             <span>
-                                                {{ item.desc[r_data[index][i]] }}
+                                                {{
+                                                item.desc[r_data[index][i]]
+                                                }}
                                             </span>
                                         </span>
-                                        <span v-if="Number(r_data[index][i]) === item.max" class="c-talent2-pop-max"
-                                            >该招式已练至最高境界</span
-                                        >
+                                        <span
+                                            v-if="Number(r_data[index][i]) === item.max"
+                                            class="c-talent2-pop-max"
+                                        >该招式已练至最高境界</span>
                                     </span>
 
                                     <!-- COUNT -->
-                                    <span v-if="Number(r_data[index][i])" class="c-talent2-content-item-count">{{
-                                        r_data[index][i]
-                                    }}</span>
+                                    <span
+                                        v-if="Number(r_data[index][i])"
+                                        class="c-talent2-content-item-count"
+                                    >{{ r_data[index][i] }}</span>
                                 </div>
                                 <div v-else class="c-talent2-content-item-empty" :key="i + 'empty'"></div>
                             </template>
@@ -234,14 +218,19 @@
                 </div>
             </div>
         </template>
-        <div class="c-talent2-footer" :class="{ 'is-single': isSingle }">
-            <a href="https://www.jx3box.com/app/talent2" target="_blank">JX3BOX Talent2 v{{ app_version }}</a>
+        <div class="c-talent2-footer" :class="{'is-single': isSingle}">
+            <a href="https://www.jx3box.com/app/talent2" target="_blank">JX3BOX Talent2 v{{app_version}}</a>
         </div>
     </div>
 </template>
 
 <script>
-import { __imgPath, __dataPath, __iconPath, __node } from "@jx3box/jx3box-common/data/jx3box.json";
+import {
+    __imgPath,
+    __dataPath,
+    __iconPath,
+} from "@jx3box/jx3box-common/data/jx3box.json";
+import { xfConfigs } from "./talent2.json";
 import { defaultXf, defaultConfigs } from "./default.json";
 import { iconLink } from "@jx3box/jx3box-common/js/utils";
 import { version } from "../package.json";
@@ -255,16 +244,15 @@ export default {
         webview: {
             type: Boolean,
             default: false,
-        },
+        }
     },
     data: () => ({
         xf: "",
         begin: "",
         l_name: "斩绝",
         r_name: "封魂",
-        xfConfigs: {},
-        version: "",
-        talentOriginData: {},
+
+        version : '',
         talents: [], // 镇派数据
         total: 33,
         l_data: ["0000", "0000", "0000", "0000", "0000", "0000"],
@@ -285,7 +273,7 @@ export default {
         mutex: [],
 
         // app version
-        app_version: version,
+        app_version : version
     }),
     computed: {
         // 是否为单心法
@@ -322,8 +310,7 @@ export default {
                 console.log(this.talentCode);
                 this.parseCode = JSON.parse(this.talentCode);
                 this.version = this.parseCode.version;
-                // await this.getTalents();
-                await this.getTanletOriginData();
+                await this.getTalents();
             } catch (e) {
                 this.$message.error("编码格式错误");
             }
@@ -375,7 +362,7 @@ export default {
                 }
             }
             // 渲染的时候，已经点了的就是亮的
-            if (this.l_data[rowIndex][colIndex] != "0") {
+            if(this.l_data[rowIndex][colIndex] != '0'){
                 canOperate = true;
             }
             return canOperate;
@@ -412,18 +399,10 @@ export default {
                 }
             }
             // 渲染的时候，已经点了的就是亮的
-            if (this.r_data[rowIndex][colIndex] != "0") {
+            if(this.r_data[rowIndex][colIndex] != '0'){
                 canOperate = true;
             }
             return canOperate;
-        },
-        getMountId(xf) {
-            const d = this.talentOriginData.mount.find((item) => item.first === xf);
-            if (d) {
-                return d.mount_id;
-            } else {
-                return d;
-            }
         },
         /**
          * 心法背景图片
@@ -433,54 +412,11 @@ export default {
         talentBg: function (pos, num) {
             if (!pos) return;
             if (pos === "left") {
-                return __imgPath + `image/talent/${this.xfContent[0]}_${num}.png`;
+                return (
+                    __imgPath + `image/talent/${this.xfContent[0]}_${num}.png`
+                );
             }
             return __imgPath + `image/talent/${this.xfContent[1]}_${num}.png`;
-        },
-        getTanletOriginData: function () {
-            this.talents = { ...defaultXf };
-            fetch(__node + "talent-origin/" + this.version)
-                .then((res) => res.json())
-                .then((response) => {
-                    const data = response.data;
-                    const mount = response.data.mount.reduce((acc, current) => {
-                        if (current.first !== null) {
-                            const existing = acc.find((item) => item.first === current.first);
-                            if (!existing) {
-                                if (
-                                    current.talent_tabs &&
-                                    current.talent_tabs.length &&
-                                    current.talent_tabs[0] === current.talent_tabs[1]
-                                ) {
-                                    acc.push({
-                                        ...current,
-                                        mount_name: current.first,
-                                        talent_tabs: [current.first],
-                                    });
-                                } else {
-                                    acc.push(current);
-                                }
-                            }
-                        }
-                        return acc;
-                    }, []);
-                    data.mount = mount;
-                    this.talentOriginData = data;
-                    this.talents = { ...response.data.detail, ...defaultXf };
-                    console.log(this.talents);
-                    this.xf = this.parseCode.xf;
-                    this.total = 66;
-                });
-        },
-        getPreTab(talentId) {
-            const condition = this.talentOriginData.condition;
-            for (const key in condition) {
-                const d = condition[key];
-                if (d[talentId] && Object.values(d[talentId].PreviousTab).length) {
-                    return Object.values(d[talentId].PreviousTab)[0];
-                }
-            }
-            return "";
         },
         async getTalents() {
             fetch(__dataPath + "talent2/" + this.version + ".json")
@@ -497,18 +433,20 @@ export default {
                     const _sq = this.parseCode.sq.split(",");
 
                     // 新增pop显示控制
-                    this.talentContent.left = this.talents[xfConfigs[val].talent[0]]?.map((left) => {
+                    this.talentContent.left = this.talents[
+                        xfConfigs[val].talent[0]
+                    ]?.map((left) => {
                         const _left = left.map((l) => {
-                            if (l) {
-                                this.$set(l, "on", false);
-                            }
+                            if (l) this.$set(l, "on", false);
                             return l;
                         });
                         return _left;
                     });
                     this.l_name = xfConfigs[val]?.talent[0];
 
-                    this.talentContent.right = this.talents[xfConfigs[val].talent[1]]?.map((right) => {
+                    this.talentContent.right = this.talents[
+                        xfConfigs[val].talent[1]
+                    ]?.map((right) => {
                         const _right = right.map((r) => {
                             if (r) this.$set(r, "on", false);
                             return r;
@@ -529,99 +467,24 @@ export default {
                     }
 
                     // 激活条件
-                    this.condition = xfConfigs[val]?.condition || [0, 5, 10, 15, 20, 25];
+                    this.condition = xfConfigs[val]?.condition || [0,5,10,15,20,25];
                     this.mutex = xfConfigs[val]?.mutex || [];
 
                     this.total = val === "通用" ? 66 : defaultConfigs.total;
                     this.series_open_need = defaultConfigs.series_open_need;
                 });
         },
-        iconLink: function (id) {
-            if (this.xf == "通用") return iconLink(id);
-            return iconLink(id, "origin");
-        },
+        iconLink: function (id){
+            if (this.xf == '通用') return iconLink(id)
+            return iconLink(id, 'origin');
+        }
     },
     filters: {
         xficon: function (id) {
             return __imgPath + "image/xf/" + id + ".png";
-        },
+        }
     },
     watch: {
-        talentOriginData() {
-            let xfConfigs = {};
-            xfConfigs["通用"] = {
-                begin: "left",
-                content: [0, 0],
-                talent: ["山川", "日月"],
-                condition: [0, 5, 10, 15, 20, 25, 25],
-            };
-            if (this.talentOriginData && this.talentOriginData.mount && this.talentOriginData.mount.length) {
-                this.talentOriginData.mount.forEach((item) => {
-                    if (item.talent_tabs.length || item.first) {
-                        const content = item.talent_tabs.map((item) => this.getMountId(item));
-                        xfConfigs[item.mount_name] = {
-                            begin: item.talent_tabs[0] === item.first ? "left" : "right",
-                            content: content,
-                            talent: item.talent_tabs,
-                            condition: [0, 5, 10, 15, 20, 25, 25],
-                        };
-                    }
-                });
-            } else {
-                this.xfConfigs = null;
-            }
-            if (xfConfigs) {
-                const val = this.xf;
-                this.xfContent = xfConfigs[val]?.content;
-                this.begin = xfConfigs[val]?.begin;
-
-                const _sq = this.parseCode.sq.split(",");
-
-                // 新增pop显示控制
-                this.talentContent.left = this.talents[xfConfigs[val].talent[0]]?.map((left) => {
-                    const _left = left.map((l) => {
-                        if (l) {
-                            l["pretab"] = this.getPreTab(l.id);
-                            this.$set(l, "on", false);
-                        }
-                        return l;
-                    });
-                    return _left;
-                });
-                this.l_name = xfConfigs[val]?.talent[0];
-
-                this.talentContent.right = this.talents[xfConfigs[val].talent[1]]?.map((right) => {
-                    const _right = right.map((r) => {
-                        if (r) {
-                            r["pretab"] = this.getPreTab(r.id);
-                            this.$set(r, "on", false);
-                        }
-                        return r;
-                    });
-                    return _right;
-                });
-                this.r_name = xfConfigs[val]?.talent[1];
-
-                // const col_len = Math.max(...this.talentContent.left.map((l) => l.length));
-                const row_len = this.talentContent.left.length;
-
-                if (this.begin === "left") {
-                    this.l_data = _sq.slice(0, row_len);
-                    this.r_data = _sq.slice(row_len, _sq.length);
-                } else if (this.begin === "right") {
-                    this.r_data = _sq.slice(0, row_len);
-                    this.l_data = _sq.slice(row_len, _sq.length);
-                }
-
-                // 激活条件
-                this.condition = xfConfigs[val]?.condition || [0, 5, 10, 15, 20, 25];
-                this.mutex = xfConfigs[val]?.mutex || [];
-
-                this.total = val === "通用" ? 66 : defaultConfigs.total;
-                this.series_open_need = defaultConfigs.series_open_need;
-            }
-            this.xfConfigs = xfConfigs;
-        },
         talentCode: {
             handler(val) {
                 if (val) {
