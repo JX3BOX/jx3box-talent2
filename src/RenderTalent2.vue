@@ -241,10 +241,13 @@
 </template>
 
 <script>
-import { __imgPath, __dataPath, __iconPath, __node } from "@jx3box/jx3box-common/data/jx3box.json";
-import { defaultXf, defaultConfigs } from "./default.json";
+import jx3box from "@jx3box/jx3box-common/data/jx3box.json";
+const { __imgPath, __dataPath, __iconPath, __node } = jx3box;
+import defaultData from "./default.json";
+const { defaultXf, defaultConfigs } = defaultData;
 import { iconLink } from "@jx3box/jx3box-common/js/utils";
-import { version } from "../package.json";
+import packageData from "../package.json";
+const { version } = packageData;
 export default {
     name: "RenderTalent2",
     props: {
