@@ -15,7 +15,7 @@
                         :class="{ 'is-single': isSingle }"
                     >
                         <div class="c-talent2-group">
-                            <img class="c-talent2-group-icon" :src="xfContent[0] | xficon" />
+                            <img class="c-talent2-group-icon" :src="xficon(xfContent[0])" />
                             <span class="c-talent2-group-count">{{ lCount }}</span>
                             <span class="c-talent2-group-name">{{ l_name }}</span>
                         </div>
@@ -25,7 +25,7 @@
                             v-for="(row, index) in talentContent.left"
                             :key="'l' + index"
                         >
-                            <template v-for="(item, i) in row">
+                            <template v-for="(item, i) in row" :key="i">
                                 <div
                                     v-if="item"
                                     class="c-talent2-content-item"
@@ -34,7 +34,7 @@
                                         !canOperate(index, 'left') ? 'c-talent2-content-item-disabled' : '',
                                         item.pretab ? 'c-talent2-pretab' : '',
                                     ]"
-                                    :key="i"
+
                                     @mouseover="$set(item, 'on', true)"
                                     @mouseleave="$set(item, 'on', false)"
                                 >
@@ -128,7 +128,7 @@
                         }"
                     >
                         <div class="c-talent2-group">
-                            <img class="c-talent2-group-icon" :src="xfContent[1] | xficon" />
+                            <img class="c-talent2-group-icon" :src="xficon(xfContent[1])" />
                             <span class="c-talent2-group-count">{{ rCount }}</span>
                             <span class="c-talent2-group-name">{{ r_name }}</span>
                         </div>
@@ -138,7 +138,7 @@
                             v-for="(row, index) in talentContent.right"
                             :key="'l' + index"
                         >
-                            <template v-for="(item, i) in row">
+                            <template v-for="(item, i) in row" :key="i">
                                 <div
                                     v-if="item"
                                     class="c-talent2-content-item"
@@ -147,7 +147,6 @@
                                         !canOperate(index, 'right') ? 'c-talent2-content-item-disabled' : '',
                                         item.pretab ? 'c-talent2-pretab' : '',
                                     ]"
-                                    :key="i"
                                     @mouseover="$set(item, 'on', true)"
                                     @mouseleave="$set(item, 'on', false)"
                                 >
@@ -503,7 +502,7 @@ export default {
                     this.talentContent.left = this.talents[xfConfigs[val].talent[0]]?.map((left) => {
                         const _left = left.map((l) => {
                             if (l) {
-                                this.$set(l, "on", false);
+                                l.on = false;
                             }
                             return l;
                         });
@@ -513,7 +512,9 @@ export default {
 
                     this.talentContent.right = this.talents[xfConfigs[val].talent[1]]?.map((right) => {
                         const _right = right.map((r) => {
-                            if (r) this.$set(r, "on", false);
+                            if (r) {
+                                r.on = false;
+                            }
                             return r;
                         });
                         return _right;
@@ -543,8 +544,6 @@ export default {
             if (this.xf == "通用") return iconLink(id);
             return iconLink(id, "origin");
         },
-    },
-    filters: {
         xficon: function (id) {
             return __imgPath + "image/xf/" + id + ".png";
         },
@@ -585,7 +584,7 @@ export default {
                     const _left = left.map((l) => {
                         if (l) {
                             l["pretab"] = this.getPreTab(l.id);
-                            this.$set(l, "on", false);
+                            l.on = false;
                         }
                         return l;
                     });
@@ -597,7 +596,7 @@ export default {
                     const _right = right.map((r) => {
                         if (r) {
                             r["pretab"] = this.getPreTab(r.id);
-                            this.$set(r, "on", false);
+                            r.on = false;
                         }
                         return r;
                     });
