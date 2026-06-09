@@ -1,5 +1,5 @@
 <template>
-    <div class="c-talent2-box c-talent2-render-box" :class="{ 'webview': webview }">
+    <div class="c-talent2-box c-talent2-render-box" :class="{ webview: webview }">
         <div class="c-talent2-header">
             <h3 class="c-talent2-title">镇派模拟器</h3>
         </div>
@@ -10,7 +10,7 @@
                     <div
                         class="c-talent2-content"
                         :style="{
-                            'background-image': xf ? `url(${talentBg('left', 1)})` : ''
+                            'background-image': xf ? `url(${talentBg('left', 1)})` : '',
                         }"
                         :class="{ 'is-single': isSingle }"
                     >
@@ -22,16 +22,16 @@
                         <div
                             class="c-talent2-content-row"
                             v-for="(row, index) in talentContent.left"
-                            :key="'l'+index"
+                            :key="'l' + index"
                         >
                             <template v-for="(item, i) in row">
                                 <div
                                     v-if="item"
                                     class="c-talent2-content-item"
                                     :class="[
-                                        {'c-talent2-content-item-skill': item.type === 'skill'},
+                                        { 'c-talent2-content-item-skill': item.type === 'skill' },
                                         !canOperate(index, 'left') ? 'c-talent2-content-item-disabled' : '',
-                                        item.pretab ? 'c-talent2-pretab' : ''
+                                        item.pretab ? 'c-talent2-pretab' : '',
                                     ]"
                                     :key="i"
                                     @mouseover="$set(item, 'on', true)"
@@ -39,17 +39,26 @@
                                 >
                                     <div
                                         :class="[
-                                            !canLeftItemOperate(index, i) ?
-                                                (item.type === 'skill' ? 'c-talent2-skill-unselected' : 'c-talent2-unselected')
-                                                    : 'c-talent2-selected',
+                                            !canLeftItemOperate(index, i)
+                                                ? item.type === 'skill'
+                                                    ? 'c-talent2-skill-unselected'
+                                                    : 'c-talent2-unselected'
+                                                : 'c-talent2-selected',
                                             item.type === 'skill' ? '' : 'c-talent2-talent',
-                                            !surplus && !Number(l_data[index][i]) ?
-                                                (item.type === 'skill' ? 'c-talent2-skill-unselected' : 'c-talent2-unselected') : ''
+                                            !surplus && !Number(l_data[index][i])
+                                                ? item.type === 'skill'
+                                                    ? 'c-talent2-skill-unselected'
+                                                    : 'c-talent2-unselected'
+                                                : '',
                                         ]"
                                     >
                                         <!-- HAS PARENT -->
                                         <span
-                                            v-if="item.pretab && !isLeftParentAdd(index, i) && canLeftItemOperate(index, i)"
+                                            v-if="
+                                                item.pretab &&
+                                                !isLeftParentAdd(index, i) &&
+                                                canLeftItemOperate(index, i)
+                                            "
                                             :class="item.type === 'skill' ? 'is-add-skill' : 'is-add'"
                                         ></span>
                                         <!-- TOTAL ZERO -->
@@ -67,20 +76,22 @@
                                     <!-- DESC -->
                                     <span class="c-talent2-pop" :class="item.on ? 'on' : ''">
                                         <b class="c-talent2-name">
-                                            <span>{{ item.name }}
+                                            <span
+                                                >{{ item.name }}
                                                 <small class="u-talent2-id" v-if="item.id">(ID: {{ item.id }})</small>
                                             </span>
                                             <span class="c-talent2-number">
-                                                第{{ Number(l_data[index][i]) + '/' + item.max }}重
+                                                第{{ Number(l_data[index][i]) + "/" + item.max }}重
                                             </span>
                                         </b>
                                         <!-- <b class="c-talent2-type">
                                             {{ item.type === 'talent' ? '被动招式': '主动招式' }}
                                         </b>-->
                                         <span class="c-talent2-desc">
-                                            {{ !Number(l_data[index][i]) || xf === '通用'
-                                            ? item.desc[0]
-                                            : item.desc[l_data[index][i] - 1]
+                                            {{
+                                                !Number(l_data[index][i]) || xf === "通用"
+                                                    ? item.desc[0]
+                                                    : item.desc[l_data[index][i] - 1]
                                             }}
                                         </span>
                                         <span
@@ -89,21 +100,17 @@
                                         >
                                             <span v-if="xf !== '通用'" class="c-next-text">下一重：</span>
                                             <span>
-                                                {{
-                                                item.desc[l_data[index][i]]
-                                                }}
+                                                {{ item.desc[l_data[index][i]] }}
                                             </span>
                                         </span>
-                                        <span
-                                            v-if="Number(l_data[index][i]) === item.max"
-                                            class="c-talent2-pop-max"
-                                        >该招式已练至最高境界</span>
+                                        <span v-if="Number(l_data[index][i]) === item.max" class="c-talent2-pop-max"
+                                            >该招式已练至最高境界</span
+                                        >
                                     </span>
                                     <!-- COUNT -->
-                                    <span
-                                        v-if="Number(l_data[index][i])"
-                                        class="c-talent2-content-item-count"
-                                    >{{ l_data[index][i] }}</span>
+                                    <span v-if="Number(l_data[index][i])" class="c-talent2-content-item-count">{{
+                                        l_data[index][i]
+                                    }}</span>
                                 </div>
                                 <div v-else class="c-talent2-content-item-empty" :key="i + 'empty'"></div>
                             </template>
@@ -116,7 +123,7 @@
                     <div
                         class="c-talent2-content"
                         :style="{
-                            'background-image': xf ? `url(${talentBg('right', 1)})` : ''
+                            'background-image': xf ? `url(${talentBg('right', 1)})` : '',
                         }"
                     >
                         <div class="c-talent2-group">
@@ -127,14 +134,14 @@
                         <div
                             class="c-talent2-content-row"
                             v-for="(row, index) in talentContent.right"
-                            :key="'l'+index"
+                            :key="'l' + index"
                         >
                             <template v-for="(item, i) in row">
                                 <div
                                     v-if="item"
                                     class="c-talent2-content-item"
                                     :class="[
-                                        {'c-talent2-content-item-skill': item.type === 'skill'},
+                                        { 'c-talent2-content-item-skill': item.type === 'skill' },
                                         !canOperate(index, 'right') ? 'c-talent2-content-item-disabled' : '',
                                         item.pretab ? 'c-talent2-pretab' : '',
                                     ]"
@@ -144,17 +151,26 @@
                                 >
                                     <div
                                         :class="[
-                                            !canRightItemOperate(index, i) ?
-                                                (item.type === 'skill' ? 'c-talent2-skill-unselected' : 'c-talent2-unselected')
-                                                    : 'c-talent2-selected',
+                                            !canRightItemOperate(index, i)
+                                                ? item.type === 'skill'
+                                                    ? 'c-talent2-skill-unselected'
+                                                    : 'c-talent2-unselected'
+                                                : 'c-talent2-selected',
                                             item.type === 'skill' ? '' : 'c-talent2-talent',
-                                            !surplus && !Number(r_data[index][i]) ?
-                                                (item.type === 'skill' ? 'c-talent2-skill-unselected' : 'c-talent2-unselected') : ''
+                                            !surplus && !Number(r_data[index][i])
+                                                ? item.type === 'skill'
+                                                    ? 'c-talent2-skill-unselected'
+                                                    : 'c-talent2-unselected'
+                                                : '',
                                         ]"
                                     >
                                         <!-- HAS PARENT -->
                                         <span
-                                            v-if="item.pretab && !isRightParentAdd(index, i) && canRightItemOperate(index, i)"
+                                            v-if="
+                                                item.pretab &&
+                                                !isRightParentAdd(index, i) &&
+                                                canRightItemOperate(index, i)
+                                            "
                                             :class="item.type === 'skill' ? 'is-add-skill' : 'is-add'"
                                         ></span>
                                         <!-- TOTAL ZERO -->
@@ -172,20 +188,22 @@
                                     <!-- DESC -->
                                     <span class="c-talent2-pop" :class="item.on ? 'on' : ''">
                                         <b class="c-talent2-name">
-                                            <span>{{ item.name }}
+                                            <span
+                                                >{{ item.name }}
                                                 <small class="u-talent2-id" v-if="item.id">(ID: {{ item.id }})</small>
                                             </span>
                                             <span class="c-talent2-number">
-                                                第{{ Number(r_data[index][i]) + '/' + item.max }}重
+                                                第{{ Number(r_data[index][i]) + "/" + item.max }}重
                                             </span>
                                         </b>
                                         <!-- <b class="c-talent2-type">
                                             {{ item.type === 'talent' ? '被动招式': '主动招式' }}
                                         </b>-->
                                         <span class="c-talent2-desc">
-                                            {{ !Number(r_data[index][i]) || xf === '通用'
-                                            ? item.desc[0]
-                                            : item.desc[r_data[index][i] - 1]
+                                            {{
+                                                !Number(r_data[index][i]) || xf === "通用"
+                                                    ? item.desc[0]
+                                                    : item.desc[r_data[index][i] - 1]
                                             }}
                                         </span>
                                         <span
@@ -194,22 +212,18 @@
                                         >
                                             <span v-if="xf !== '通用'" class="c-next-text">下一重：</span>
                                             <span>
-                                                {{
-                                                item.desc[r_data[index][i]]
-                                                }}
+                                                {{ item.desc[r_data[index][i]] }}
                                             </span>
                                         </span>
-                                        <span
-                                            v-if="Number(r_data[index][i]) === item.max"
-                                            class="c-talent2-pop-max"
-                                        >该招式已练至最高境界</span>
+                                        <span v-if="Number(r_data[index][i]) === item.max" class="c-talent2-pop-max"
+                                            >该招式已练至最高境界</span
+                                        >
                                     </span>
 
                                     <!-- COUNT -->
-                                    <span
-                                        v-if="Number(r_data[index][i])"
-                                        class="c-talent2-content-item-count"
-                                    >{{ r_data[index][i] }}</span>
+                                    <span v-if="Number(r_data[index][i])" class="c-talent2-content-item-count">{{
+                                        r_data[index][i]
+                                    }}</span>
                                 </div>
                                 <div v-else class="c-talent2-content-item-empty" :key="i + 'empty'"></div>
                             </template>
@@ -218,22 +232,22 @@
                 </div>
             </div>
         </template>
-        <div class="c-talent2-footer" :class="{'is-single': isSingle}">
-            <a href="https://www.jx3box.com/app/talent2" target="_blank">JX3BOX Talent2 v{{app_version}}</a>
+        <div class="c-talent2-footer" :class="{ 'is-single': isSingle }">
+            <a href="https://www.jx3box.com/app/talent2" target="_blank">JX3BOX Talent2 v{{ app_version }}</a>
         </div>
     </div>
 </template>
 
 <script>
-import {
-    __imgPath,
-    __dataPath,
-    __iconPath,
-} from "@jx3box/jx3box-common/data/jx3box.json";
-import { xfConfigs } from "./talent2.json";
-import { defaultXf, defaultConfigs } from "./default.json";
+import jx3box from "@jx3box/jx3box-common/data/jx3box.json";
+const { __imgPath, __dataPath, __iconPath } = jx3box;
+import talent2Data from "./talent2.json";
+const { xfConfigs } = talent2Data;
+import defaultData from "./default.json";
+const { defaultXf, defaultConfigs } = defaultData;
 import { iconLink } from "@jx3box/jx3box-common/js/utils";
-import { version } from "../package.json";
+import packageData from "../package.json";
+const { version } = packageData;
 export default {
     name: "RenderTalent2",
     props: {
@@ -244,7 +258,7 @@ export default {
         webview: {
             type: Boolean,
             default: false,
-        }
+        },
     },
     data: () => ({
         xf: "",
@@ -252,7 +266,7 @@ export default {
         l_name: "斩绝",
         r_name: "封魂",
 
-        version : '',
+        version: "",
         talents: [], // 镇派数据
         total: 33,
         l_data: ["0000", "0000", "0000", "0000", "0000", "0000"],
@@ -273,7 +287,7 @@ export default {
         mutex: [],
 
         // app version
-        app_version : version
+        app_version: version,
     }),
     computed: {
         // 是否为单心法
@@ -362,7 +376,7 @@ export default {
                 }
             }
             // 渲染的时候，已经点了的就是亮的
-            if(this.l_data[rowIndex][colIndex] != '0'){
+            if (this.l_data[rowIndex][colIndex] != "0") {
                 canOperate = true;
             }
             return canOperate;
@@ -399,7 +413,7 @@ export default {
                 }
             }
             // 渲染的时候，已经点了的就是亮的
-            if(this.r_data[rowIndex][colIndex] != '0'){
+            if (this.r_data[rowIndex][colIndex] != "0") {
                 canOperate = true;
             }
             return canOperate;
@@ -412,9 +426,7 @@ export default {
         talentBg: function (pos, num) {
             if (!pos) return;
             if (pos === "left") {
-                return (
-                    __imgPath + `image/talent/${this.xfContent[0]}_${num}.png`
-                );
+                return __imgPath + `image/talent/${this.xfContent[0]}_${num}.png`;
             }
             return __imgPath + `image/talent/${this.xfContent[1]}_${num}.png`;
         },
@@ -433,9 +445,7 @@ export default {
                     const _sq = this.parseCode.sq.split(",");
 
                     // 新增pop显示控制
-                    this.talentContent.left = this.talents[
-                        xfConfigs[val].talent[0]
-                    ]?.map((left) => {
+                    this.talentContent.left = this.talents[xfConfigs[val].talent[0]]?.map((left) => {
                         const _left = left.map((l) => {
                             if (l) this.$set(l, "on", false);
                             return l;
@@ -444,9 +454,7 @@ export default {
                     });
                     this.l_name = xfConfigs[val]?.talent[0];
 
-                    this.talentContent.right = this.talents[
-                        xfConfigs[val].talent[1]
-                    ]?.map((right) => {
+                    this.talentContent.right = this.talents[xfConfigs[val].talent[1]]?.map((right) => {
                         const _right = right.map((r) => {
                             if (r) this.$set(r, "on", false);
                             return r;
@@ -467,22 +475,22 @@ export default {
                     }
 
                     // 激活条件
-                    this.condition = xfConfigs[val]?.condition || [0,5,10,15,20,25];
+                    this.condition = xfConfigs[val]?.condition || [0, 5, 10, 15, 20, 25];
                     this.mutex = xfConfigs[val]?.mutex || [];
 
                     this.total = val === "通用" ? 66 : defaultConfigs.total;
                     this.series_open_need = defaultConfigs.series_open_need;
                 });
         },
-        iconLink: function (id){
-            if (this.xf == '通用') return iconLink(id)
-            return iconLink(id, 'origin');
-        }
+        iconLink: function (id) {
+            if (this.xf == "通用") return iconLink(id);
+            return iconLink(id, "origin");
+        },
     },
     filters: {
         xficon: function (id) {
             return __imgPath + "image/xf/" + id + ".png";
-        }
+        },
     },
     watch: {
         talentCode: {
